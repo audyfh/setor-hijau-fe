@@ -75,7 +75,13 @@ _Update this section whenever work is handed off._
   - Auth & session subsystem: `lib/auth/types.ts`, `lib/auth/session.ts`, `lib/api/auth.ts`, `lib/auth/fetch-auth.ts` (single-flight `401` refresh token rotation), `components/auth/auth-provider.tsx`, `components/auth/role-guard.tsx`, and `components/auth/workspace-shell.tsx`.
   - Auth & role routes: `/daftar` (`app/daftar/page.tsx`), `/login` (`app/login/page.tsx` with primary password login + optional Nasabah QR + 6-digit PIN), `/lupa-password` (`app/lupa-password/page.tsx`), `/pengelola` (`app/pengelola/page.tsx`), and `/nasabah` (`app/nasabah/page.tsx`).
   - Unit tests in `lib/__tests__/auth.test.ts` covering JWT claim fallback, `401` refresh token rotation, and auth API calls.
-- **Next milestone**: `M3` — Pengelola Workspace: Nasabah & Master Data (`docs/plans/ROADMAP.md`).
+- **Milestone M3 (Pengelola Workspace: Nasabah & Master Data) is completed**:
+  - Typed Pengelola API clients: `lib/api/nasabah.ts` and `lib/api/materials.ts` (enforcing integer Rupiah `price_per_kg_idr`).
+  - Pengelola workspace navigation (`components/auth/workspace-shell.tsx`, `app/pengelola/page.tsx`) and live management pages:
+    - `/pengelola/nasabah` (`app/pengelola/nasabah/page.tsx`): Nasabah search/filter (`search`, `rw`, `rt`), create & edit Nasabah, printable QR Card modal & token regeneration, and Pengelola-initiated PIN/password reset.
+    - `/pengelola/materials` (`app/pengelola/materials/page.tsx`): Master Data Jenis & Harga Sampah CRUD, WARM v16 factor linking, append-only price updates, and price history viewer.
+  - Unit tests in `lib/__tests__/pengelola-api.test.ts`.
+- **Next milestone**: `M4` — Deposit Recording (Setoran), QR Lookup, Offline Sync & Struk Digital (`docs/plans/ROADMAP.md`).
 
 ## Where to look
 | Need | File |

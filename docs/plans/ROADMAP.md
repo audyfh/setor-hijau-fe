@@ -25,12 +25,12 @@ Each milestone gets its own plan file in `docs/plans/active/` when started and m
 - Auth context, automatic access/refresh token rotation (`POST /api/v1/auth/refresh`), logout, and role-based route guards (`/pengelola/*`, `/nasabah/*`)
 - Accept: Both roles log in and refresh tokens seamlessly; QR + PIN is optional; no tokens/PINs logged
 
-## M3 — Pengelola Workspace: Nasabah & Master Data [NEXT]
+## M3 — Pengelola Workspace: Nasabah & Master Data [COMPLETED]
 - Nasabah CRUD (`GET/POST/PUT /api/v1/nasabah`), QR card modal/print, QR token regeneration, Pengelola PIN/password reset
 - Master Data Jenis & Harga Sampah (`GET/POST/PUT /api/v1/materials`), append-only price update & history viewer (`POST/GET /api/v1/materials/:id/prices`)
 - Accept: Price changes show append-only history; all weights/prices remain integer values in forms/state
 
-## M4 — Deposit Recording (Setoran), QR Lookup, Offline Sync & Struk Digital
+## M4 — Deposit Recording (Setoran), QR Lookup, Offline Sync & Struk Digital [NEXT]
 - Deposit form with integer gram inputs, live subtotal & estimated CO2e preview, and Pengelola QR scanner lookup (`POST /api/v1/nasabah/lookup-qr`)
 - IndexedDB cache (materials & nasabah) and offline outbox queue generating UUIDv4 `idempotency_key` & `client_recorded_at`
 - Background & manual sync via `POST /api/v1/deposits/sync` handling `200`/`201` idempotent replays cleanly
