@@ -1,26 +1,128 @@
+/* Hallmark · shape: Narrative Workflow · genre: modern-minimal · theme: Coral (deal 2/3, seed setor-hijau-rw-level-bank-09f3·e80e468e·2026-11-18·r0) · job: try · draw: d79765
+ * hero: Corridor · nav: edge-aligned · footer: statement · imagery: the product · signature: cotton deposit receipt & live Net Impact Meter
+ * axes: light/grotesk-sans/warm · posture: restrained · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H5 E4 S5 R4 V4 · weakest: R, trimmed decorative chips so every figure carries its real unit and estimation label */
 @import "tailwindcss";
+@import "./tokens.css";
+@import "./base.css" layer(base);
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+.desk {
+  background-color: var(--color-desk);
+  background-image:
+    radial-gradient(90% 120% at 0% 30%, var(--color-cotton), transparent 62%),
+    var(--tex-desk);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.stock {
+  background-color: var(--color-cotton);
+  background-image:
+    linear-gradient(100deg, var(--color-cotton), transparent 45%),
+    var(--tex-cotton);
+  color: var(--color-print);
+  border-radius: var(--radius-stock);
+  box-shadow: var(--edge-stock), var(--cast-stock);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.board {
+  background-color: var(--color-board);
+  color: var(--color-board-type);
+}
+
+.fig {
+  font-family: var(--font-outlier);
+  font-variant-numeric: tabular-nums;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  min-height: 48px;
+  padding: 0 var(--space-lg);
+  border: 0;
+  border-radius: var(--radius-stock);
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out);
+}
+
+.btn--card {
+  background-color: var(--color-cotton);
+  background-image: var(--tex-cotton);
+  color: var(--color-print);
+  text-shadow: 0.5px 0.75px 0 var(--color-cotton);
+  box-shadow: var(--edge-stock), var(--cast-stock);
+}
+
+.btn--ink {
+  background-color: var(--color-board);
+  color: var(--color-board-type);
+  text-shadow: 0 -0.75px 0 var(--color-ink);
+  box-shadow: var(--cast-stock);
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--edge-stock), var(--cast-stock-lift);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.field-input {
+  min-height: 48px;
+  padding: 0 var(--space-md);
+  border: var(--rule-hair) solid var(--color-muted);
+  border-radius: var(--radius-input);
+  background-color: var(--color-cotton);
+  color: var(--color-ink);
+  font-size: var(--text-md);
+}
+
+.field-input::placeholder {
+  color: var(--color-muted);
+}
+
+.field-input:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
+}
+
+.pressed-seal {
+  display: inline-block;
+  padding: var(--space-2xs) var(--space-sm);
+  border: var(--rule-hair) solid var(--color-paid);
+  border-radius: var(--radius-input);
+  color: var(--color-paid);
+  font-weight: 600;
+  transform: rotate(-1.5deg);
+}
+
+.groove {
+  background-color: var(--color-paper-2);
+  border-radius: var(--radius-card);
+  box-shadow: var(--press-groove);
+}
+
+.section-band {
+  padding-block: var(--section-gap-s);
+}
+
+.section-rule {
+  border-top: var(--rule-hair) solid var(--color-rule);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn:hover:not(:disabled),
+  .btn:active:not(:disabled) {
+    transform: none;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }

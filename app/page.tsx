@@ -1,69 +1,219 @@
-import Image from "next/image";
+import { Suspense } from "react";
+import Link from "next/link";
+import { connection } from "next/server";
+import { NetImpactMeter } from "@/components/public/net-impact-meter";
+import { SiteFooter } from "@/components/public/site-footer";
+import { SiteHeader } from "@/components/public/site-header";
+import { fetchPublicImpact } from "@/lib/api/public";
+import { formatEstimatedCO2eGrams, formatRupiah, formatWeightGrams } from "@/lib/format/units";
 
-export default function Home() {
+const SORTING_SUMMARY = [
+  {
+    category: "Plastik PET & HDPE",
+    examples: "Botol minum transparan, jeriken, dan botol detergen bilas bersih.",
+    note: "Lepaskan tutup dan label jika memungkinkan, lalu remas agar ringkas.",
+  },
+  {
+    category: "Kertas & Kardus",
+    examples: "Karton gelombang, kardus kemasan, kertas HVS, koran, dan majalah.",
+    note: "Pastikan kering dan bebas minyak atau sisa makanan.",
+  },
+  {
+    category: "Logam & Kaleng",
+    examples: "Kaleng minuman aluminium dan kaleng makanan berbahan besi atau baja.",
+    note: "Kosongkan isi dan bilas singkat sebelum ditimbang di pos RW.",
+  },
+  {
+    category: "Kaca & Botol Beling",
+    examples: "Botol kaca bening maupun berwarna yang masih utuh.",
+    note: "Pisahkan dari pecahan tajam agar aman bagi petugas penimbangan.",
+  },
+];
+
+async function LiveNetImpactSection() {
+  await connection();
+  let impact = null;
+  let errorMessage: string | null = null;
+
+  try {
+    impact = await fetchPublicImpact();
+  } catch (error) {
+    errorMessage =
+      error instanceof Error
+        ? error.message
+        : "Gagal terhubung ke layanan backend Setor Hijau.";
+  }
+
+  return <NetImpactMeter initialImpact={impact} initialError={errorMessage} />;
+}
+
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="flex min-h-full flex-col bg-[var(--color-paper)] text-[var(--color-ink)]">
+      <SiteHeader activePath="/" />
+
+      <main className="flex-1">
+        <section className="desk border-b border-[var(--color-rule)] py-[var(--space-2xl)]">
+          <div className="container grid items-center gap-[var(--space-xl)] lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
+            <div className="space-y-[var(--space-lg)]">
+              <h1>Catatan bank sampah RW, rapi dan terukur.</h1>
+              <p className="lead text-[var(--color-ink-2)]">
+                Catat setoran offline, pantau buku kas, dan hitung estimasi emisi terhindar.
+              </p>
+              <div className="flex flex-wrap items-center gap-[var(--space-md)]">
+                <a href="#net-impact" className="btn btn--ink">
+                  Lihat Net Impact Meter
+                </a>
+                <Link href="/metode" className="btn btn--card">
+                  Metode &amp; Sumber
+                </Link>
+              </div>
+            </div>
+
+            <aside aria-label="Contoh format struk digital Setor Hijau" className="stock p-[var(--space-xl)]">
+              <div className="flex items-start justify-between gap-[var(--space-md)] border-b border-[var(--color-rule)] pb-[var(--space-md)]">
+                <div>
+                  <p className="text-[var(--text-sm)] font-semibold text-[var(--color-ink)]">
+                    Contoh Format Struk Digital
+                  </p>
+                  <p className="text-[var(--text-xs)] text-[var(--color-muted)]">
+                    Ilustrasi tampilan catatan setoran nasabah RW
+                  </p>
+                </div>
+                <span className="pressed-seal text-[var(--text-xs)]">Tercatat</span>
+              </div>
+
+              <dl className="mt-[var(--space-md)] divide-y divide-[var(--color-rule)] text-[var(--text-sm)]">
+                <div className="flex items-center justify-between gap-[var(--space-md)] py-[var(--space-sm)]">
+                  <dt className="text-[var(--color-ink-2)]">
+                    Botol Plastik PET ({formatWeightGrams(2000)})
+                  </dt>
+                  <dd className="fig font-medium text-[var(--color-ink)]">
+                    {formatRupiah(8000)}
+                  </dd>
+                </div>
+                <div className="flex items-center justify-between gap-[var(--space-md)] py-[var(--space-sm)]">
+                  <dt className="text-[var(--color-ink-2)]">
+                    Kardus Gelombang ({formatWeightGrams(3000)})
+                  </dt>
+                  <dd className="fig font-medium text-[var(--color-ink)]">
+                    {formatRupiah(7500)}
+                  </dd>
+                </div>
+              </dl>
+
+              <div className="mt-[var(--space-md)] flex flex-wrap items-baseline justify-between gap-[var(--space-sm)] border-t border-[var(--color-rule-2)] pt-[var(--space-md)]">
+                <div>
+                  <p className="text-[var(--text-xs)] text-[var(--color-muted)]">
+                    Total nilai setoran (contoh)
+                  </p>
+                  <p className="fig text-[var(--text-xl)] font-semibold text-[var(--color-ink)]">
+                    {formatRupiah(15500)}
+                  </p>
+                </div>
+                <div className="text-left sm:text-right">
+                  <p className="text-[var(--text-xs)] text-[var(--color-muted)]">
+                    Estimasi emisi terhindar (WARM v16)
+                  </p>
+                  <p className="fig text-[var(--text-lg)] font-semibold text-[var(--color-accent-2)]">
+                    {formatEstimatedCO2eGrams(12820)}
+                  </p>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section className="section-band">
+          <div className="container space-y-[var(--space-xl)]">
+            <div className="space-y-[var(--space-xs)]">
+              <h2>Dari timbangan pos RW ke transparansi dampak</h2>
+              <p className="lead text-[var(--color-ink-2)]">
+                Dirancang untuk dua peran utama di tingkat RW: Pengelola bank sampah dan Nasabah
+                warga.
+              </p>
+            </div>
+
+            <ol className="grid gap-[var(--space-lg)] md:grid-cols-3">
+              <li className="stock space-y-[var(--space-sm)] p-[var(--space-lg)]">
+                <p className="fig text-[var(--text-sm)] font-medium text-[var(--color-accent-2)]">
+                  01 · Penimbangan &amp; Setoran
+                </p>
+                <h3>Catat offline di pos RW</h3>
+                <p className="text-[var(--text-sm)] text-[var(--color-ink-2)]">
+                  Pengelola menimbang sampah dalam gram bulat, menyimpan antrean secara lokal saat
+                  sinyal lemah, dan menyinkronkan tanpa duplikasi.
+                </p>
+              </li>
+
+              <li className="stock space-y-[var(--space-sm)] p-[var(--space-lg)]">
+                <p className="fig text-[var(--text-sm)] font-medium text-[var(--color-accent-2)]">
+                  02 · Buku Kas &amp; Struk
+                </p>
+                <h3>Saldo dan kas selalu sinkron</h3>
+                <p className="text-[var(--text-sm)] text-[var(--color-ink-2)]">
+                  Setiap setoran menghasilkan struk digital, mencatat saldo nasabah, serta terhubung
+                  ke penjualan pengepul dan penarikan kas.
+                </p>
+              </li>
+
+              <li className="stock space-y-[var(--space-sm)] p-[var(--space-lg)]">
+                <p className="fig text-[var(--text-sm)] font-medium text-[var(--color-accent-2)]">
+                  03 · Akuntansi Karbon
+                </p>
+                <h3>Estimasi bersih yang jujur</h3>
+                <p className="text-[var(--text-sm)] text-[var(--color-ink-2)]">
+                  Emisi terhindar (WARM v16) dikurangi jejak transfer data aplikasi web (SWDM v4)
+                  untuk menampilkan Net Impact secara terbuka.
+                </p>
+              </li>
+            </ol>
+          </div>
+        </section>
+
+        <section id="net-impact" className="section-band section-rule bg-[var(--color-paper-2)]">
+          <div className="container">
+            <Suspense
+              fallback={
+                <div className="stock p-[var(--space-xl)] text-[var(--text-sm)] text-[var(--color-ink-2)]">
+                  Memuat data langsung Net Impact Meter dari server…
+                </div>
+              }
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+              <LiveNetImpactSection />
+            </Suspense>
+          </div>
+        </section>
+
+        <section className="section-band section-rule">
+          <div className="container space-y-[var(--space-xl)]">
+            <div className="flex flex-wrap items-end justify-between gap-[var(--space-md)]">
+              <div className="space-y-[var(--space-xs)]">
+                <h2>Panduan pemilahan sampah anorganik</h2>
+                <p className="lead text-[var(--color-ink-2)]">
+                  Empat kelompok material bernilai ekonomi yang dicatat dalam Carbon Ledger Setor
+                  Hijau.
+                </p>
+              </div>
+              <Link href="/panduan" className="btn btn--card">
+                Baca Panduan Lengkap
+              </Link>
+            </div>
+
+            <div className="grid gap-[var(--space-lg)] sm:grid-cols-2">
+              {SORTING_SUMMARY.map((item) => (
+                <article key={item.category} className="stock space-y-[var(--space-xs)] p-[var(--space-lg)]">
+                  <h3>{item.category}</h3>
+                  <p className="text-[var(--text-sm)] text-[var(--color-ink-2)]">{item.examples}</p>
+                  <p className="text-[var(--text-xs)] text-[var(--color-muted)]">{item.note}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
       </main>
+
+      <SiteFooter />
     </div>
   );
 }
