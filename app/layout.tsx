@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { Geist_Mono } from "next/font/google";
+import { AuthProvider } from "@/components/auth/auth-provider";
 import {
   CarbonTelemetryProvider,
   SessionCarbonBadge,
@@ -32,10 +33,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="min-h-full flex flex-col">
         <Suspense fallback={null}>
-          <CarbonTelemetryProvider>
-            <div className="flex flex-1 flex-col">{children}</div>
-            <SessionCarbonBadge />
-          </CarbonTelemetryProvider>
+          <AuthProvider>
+            <CarbonTelemetryProvider>
+              <div className="flex flex-1 flex-col">{children}</div>
+              <SessionCarbonBadge />
+            </CarbonTelemetryProvider>
+          </AuthProvider>
         </Suspense>
       </body>
     </html>

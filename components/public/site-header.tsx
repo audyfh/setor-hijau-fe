@@ -1,13 +1,20 @@
 import Link from "next/link";
 
 interface SiteHeaderProps {
-  activePath?: "/" | "/metode" | "/panduan";
+  activePath?: "/" | "/metode" | "/panduan" | "/login" | "/daftar";
 }
 
-const NAV_LINKS: Array<{ href: string; label: string; match?: "/" | "/metode" | "/panduan" }> = [
+const NAV_LINKS: Array<{
+  href: string;
+  label: string;
+  match?: "/" | "/metode" | "/panduan" | "/login" | "/daftar";
+}> = [
+  { href: "/#produk-saas", label: "Produk SaaS" },
   { href: "/#net-impact", label: "Net Impact Meter" },
   { href: "/metode", label: "Metode & Sumber", match: "/metode" },
   { href: "/panduan", label: "Panduan Pemilahan", match: "/panduan" },
+  { href: "/login", label: "Masuk", match: "/login" },
+  { href: "/daftar", label: "Daftarkan RW", match: "/daftar" },
 ];
 
 export function SiteHeader({ activePath }: SiteHeaderProps) {

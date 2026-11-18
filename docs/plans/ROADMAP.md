@@ -17,7 +17,7 @@ Each milestone gets its own plan file in `docs/plans/active/` when started and m
 - Public **Panduan Pemilahan Sampah** section/page
 - Accept: Public pages render live Cloud Run data, explicitly label all carbon figures as estimates, and pass Hallmark `sloplint` + `npm run check`
 
-## M2 — Authentication & Bank Sampah Registration [NEXT]
+## M2 — Authentication & Bank Sampah Registration [COMPLETED]
 - Bank Sampah registration flow (`POST /api/v1/tenants/register`)
 - Primary login (`identifier` + `password`, plus `bank_sampah_code` for Nasabah)
 - Optional Nasabah QR + 6-digit PIN login (`POST /api/v1/auth/login/qr`)
@@ -25,7 +25,7 @@ Each milestone gets its own plan file in `docs/plans/active/` when started and m
 - Auth context, automatic access/refresh token rotation (`POST /api/v1/auth/refresh`), logout, and role-based route guards (`/pengelola/*`, `/nasabah/*`)
 - Accept: Both roles log in and refresh tokens seamlessly; QR + PIN is optional; no tokens/PINs logged
 
-## M3 — Pengelola Workspace: Nasabah & Master Data
+## M3 — Pengelola Workspace: Nasabah & Master Data [NEXT]
 - Nasabah CRUD (`GET/POST/PUT /api/v1/nasabah`), QR card modal/print, QR token regeneration, Pengelola PIN/password reset
 - Master Data Jenis & Harga Sampah (`GET/POST/PUT /api/v1/materials`), append-only price update & history viewer (`POST/GET /api/v1/materials/:id/prices`)
 - Accept: Price changes show append-only history; all weights/prices remain integer values in forms/state

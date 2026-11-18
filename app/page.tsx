@@ -7,6 +7,29 @@ import { SiteHeader } from "@/components/public/site-header";
 import { fetchPublicImpact } from "@/lib/api/public";
 import { formatEstimatedCO2eGrams, formatRupiah, formatWeightGrams } from "@/lib/format/units";
 
+const SAAS_CAPABILITIES = [
+  {
+    title: "Multi-Tenant per Bank Sampah RW",
+    detail:
+      "Setiap bank sampah mendapatkan kode unik RW dengan isolasi data penuh untuk nasabah, harga, dan kas.",
+  },
+  {
+    title: "Setoran Offline-First & Idempoten",
+    detail:
+      "Penimbangan di pos RW tetap berjalan saat sinyal lemah melalui antrean lokal dan sinkronisasi tanpa duplikasi.",
+  },
+  {
+    title: "Buku Kas & Struk Digital Otomatis",
+    detail:
+      "Saldo rupiah nasabah, penjualan ke pengepul, penarikan kas, hingga laporan bulanan CSV/PDF terhitung otomatis.",
+  },
+  {
+    title: "Carbon Ledger & Net Impact Meter",
+    detail:
+      "Setiap setoran mencatat estimasi emisi terhindar (WARM v16) dikurangi estimasi jejak digital web (SWDM v4).",
+  },
+];
+
 const SORTING_SUMMARY = [
   {
     category: "Plastik PET & HDPE",
@@ -56,21 +79,24 @@ export default function HomePage() {
         <section className="desk border-b border-[var(--color-rule)] py-[var(--space-2xl)]">
           <div className="container grid items-center gap-[var(--space-xl)] lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
             <div className="space-y-[var(--space-lg)]">
-              <h1>Catatan bank sampah RW, rapi dan terukur.</h1>
+              <h1>Platform SaaS bank sampah RW, rapi dan terukur.</h1>
               <p className="lead text-[var(--color-ink-2)]">
-                Catat setoran offline, pantau buku kas, dan hitung estimasi emisi terhindar.
+                Kelola nasabah, setoran offline, buku kas, dan estimasi karbon dalam satu sistem.
               </p>
               <div className="flex flex-wrap items-center gap-[var(--space-md)]">
-                <a href="#net-impact" className="btn btn--ink">
-                  Lihat Net Impact Meter
-                </a>
-                <Link href="/metode" className="btn btn--card">
-                  Metode &amp; Sumber
+                <Link href="/daftar" className="btn btn--ink">
+                  Daftarkan Bank Sampah RW
+                </Link>
+                <Link href="/login" className="btn btn--card">
+                  Masuk ke Akun
                 </Link>
               </div>
             </div>
 
-            <aside aria-label="Contoh format struk digital Setor Hijau" className="stock p-[var(--space-xl)]">
+            <aside
+              aria-label="Contoh format struk digital Setor Hijau"
+              className="stock p-[var(--space-xl)]"
+            >
               <div className="flex items-start justify-between gap-[var(--space-md)] border-b border-[var(--color-rule)] pb-[var(--space-md)]">
                 <div>
                   <p className="text-[var(--text-sm)] font-semibold text-[var(--color-ink)]">
@@ -124,50 +150,57 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="section-band">
+        <section id="produk-saas" className="section-band">
           <div className="container space-y-[var(--space-xl)]">
             <div className="space-y-[var(--space-xs)]">
-              <h2>Dari timbangan pos RW ke transparansi dampak</h2>
+              <h2>Satu platform SaaS untuk operasional bank sampah RW</h2>
               <p className="lead text-[var(--color-ink-2)]">
-                Dirancang untuk dua peran utama di tingkat RW: Pengelola bank sampah dan Nasabah
-                warga.
+                Menggantikan buku tulis manual di pos RW dengan alur kerja terstruktur untuk
+                Pengelola dan Nasabah.
               </p>
             </div>
 
-            <ol className="grid gap-[var(--space-lg)] md:grid-cols-3">
-              <li className="stock space-y-[var(--space-sm)] p-[var(--space-lg)]">
-                <p className="fig text-[var(--text-sm)] font-medium text-[var(--color-accent-2)]">
-                  01 · Penimbangan &amp; Setoran
-                </p>
-                <h3>Catat offline di pos RW</h3>
-                <p className="text-[var(--text-sm)] text-[var(--color-ink-2)]">
-                  Pengelola menimbang sampah dalam gram bulat, menyimpan antrean secara lokal saat
-                  sinyal lemah, dan menyinkronkan tanpa duplikasi.
-                </p>
-              </li>
+            <div className="grid gap-[var(--space-lg)] md:grid-cols-2">
+              {SAAS_CAPABILITIES.map((cap, index) => (
+                <article key={cap.title} className="stock space-y-[var(--space-xs)] p-[var(--space-lg)]">
+                  <p className="fig text-[var(--text-xs)] font-medium text-[var(--color-accent-2)]">
+                    0{index + 1}
+                  </p>
+                  <h3>{cap.title}</h3>
+                  <p className="text-[var(--text-sm)] text-[var(--color-ink-2)]">{cap.detail}</p>
+                </article>
+              ))}
+            </div>
 
-              <li className="stock space-y-[var(--space-sm)] p-[var(--space-lg)]">
-                <p className="fig text-[var(--text-sm)] font-medium text-[var(--color-accent-2)]">
-                  02 · Buku Kas &amp; Struk
-                </p>
-                <h3>Saldo dan kas selalu sinkron</h3>
+            <div className="grid gap-[var(--space-lg)] lg:grid-cols-2">
+              <article className="stock space-y-[var(--space-sm)] p-[var(--space-xl)]">
+                <h3>Untuk Pengelola Bank Sampah</h3>
                 <p className="text-[var(--text-sm)] text-[var(--color-ink-2)]">
-                  Setiap setoran menghasilkan struk digital, mencatat saldo nasabah, serta terhubung
-                  ke penjualan pengepul dan penarikan kas.
+                  Daftarkan unit bank sampah RW Anda dalam hitungan menit, kelola daftar nasabah dan
+                  kartu QR, atur riwayat harga per jenis sampah, catat setoran secara offline, dan
+                  unduh laporan kas bulanan CSV maupun PDF.
                 </p>
-              </li>
+                <div className="pt-[var(--space-xs)]">
+                  <Link href="/daftar" className="btn btn--ink">
+                    Mulai Daftarkan RW
+                  </Link>
+                </div>
+              </article>
 
-              <li className="stock space-y-[var(--space-sm)] p-[var(--space-lg)]">
-                <p className="fig text-[var(--text-sm)] font-medium text-[var(--color-accent-2)]">
-                  03 · Akuntansi Karbon
-                </p>
-                <h3>Estimasi bersih yang jujur</h3>
+              <article className="stock space-y-[var(--space-sm)] p-[var(--space-xl)]">
+                <h3>Untuk Nasabah Warga RW</h3>
                 <p className="text-[var(--text-sm)] text-[var(--color-ink-2)]">
-                  Emisi terhindar (WARM v16) dikurangi jejak transfer data aplikasi web (SWDM v4)
-                  untuk menampilkan Net Impact secara terbuka.
+                  Masuk menggunakan kode bank sampah dan akun warga (atau QR + PIN 6 digit opsional)
+                  untuk memantau saldo rupiah, struk digital setiap setoran, riwayat penarikan, dan
+                  estimasi tabungan karbon pribadi.
                 </p>
-              </li>
-            </ol>
+                <div className="pt-[var(--space-xs)]">
+                  <Link href="/login" className="btn btn--card">
+                    Masuk sebagai Nasabah
+                  </Link>
+                </div>
+              </article>
+            </div>
           </div>
         </section>
 
@@ -202,7 +235,10 @@ export default function HomePage() {
 
             <div className="grid gap-[var(--space-lg)] sm:grid-cols-2">
               {SORTING_SUMMARY.map((item) => (
-                <article key={item.category} className="stock space-y-[var(--space-xs)] p-[var(--space-lg)]">
+                <article
+                  key={item.category}
+                  className="stock space-y-[var(--space-xs)] p-[var(--space-lg)]"
+                >
                   <h3>{item.category}</h3>
                   <p className="text-[var(--text-sm)] text-[var(--color-ink-2)]">{item.examples}</p>
                   <p className="text-[var(--text-xs)] text-[var(--color-muted)]">{item.note}</p>

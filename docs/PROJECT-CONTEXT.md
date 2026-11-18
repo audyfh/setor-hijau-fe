@@ -70,7 +70,12 @@ _Update this section whenever work is handed off._
   - Hallmark `Coral` design system adopted (`app/tokens.css`, `app/base.css`, `app/globals.css`, `public/cotton.svg`, `public/felt.svg`) with `General Sans` + `Geist Mono` (`next/font/google`), and `<SessionCarbonBadge />` aligned to design tokens.
   - Typed public API client (`lib/api/public.ts`) + unit tests (`lib/__tests__/public-api.test.ts`) consuming `GET /api/v1/public/impact`, `GET /api/v1/public/impact/tenants/:code`, and `GET /api/v1/public/methods`.
   - Public routes implemented with explicit `"Estimasi"` carbon labels: Landing page & live **Net Impact Meter** with tenant code lookup (`app/page.tsx`, `components/public/net-impact-meter.tsx`), **"Metode & Sumber"** (`app/metode/page.tsx`), and **Panduan Pemilahan Sampah** (`app/panduan/page.tsx`).
-- **Next milestone**: `M2` — Authentication & Bank Sampah Registration (`docs/plans/ROADMAP.md`).
+- **Milestone M2 (Authentication, Bank Sampah Registration & SaaS Landing Emphasis) is completed**:
+  - Updated landing page (`app/page.tsx`) to emphasize the Setor Hijau multi-tenant RW bank sampah SaaS product capabilities for Pengelola and Nasabah while preserving the *Contoh Format Struk Digital* illustration.
+  - Auth & session subsystem: `lib/auth/types.ts`, `lib/auth/session.ts`, `lib/api/auth.ts`, `lib/auth/fetch-auth.ts` (single-flight `401` refresh token rotation), `components/auth/auth-provider.tsx`, `components/auth/role-guard.tsx`, and `components/auth/workspace-shell.tsx`.
+  - Auth & role routes: `/daftar` (`app/daftar/page.tsx`), `/login` (`app/login/page.tsx` with primary password login + optional Nasabah QR + 6-digit PIN), `/lupa-password` (`app/lupa-password/page.tsx`), `/pengelola` (`app/pengelola/page.tsx`), and `/nasabah` (`app/nasabah/page.tsx`).
+  - Unit tests in `lib/__tests__/auth.test.ts` covering JWT claim fallback, `401` refresh token rotation, and auth API calls.
+- **Next milestone**: `M3` — Pengelola Workspace: Nasabah & Master Data (`docs/plans/ROADMAP.md`).
 
 ## Where to look
 | Need | File |
