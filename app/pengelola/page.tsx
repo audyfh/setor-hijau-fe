@@ -9,6 +9,9 @@ export const PENGELOLA_NAV: WorkspaceNavItem[] = [
   { href: "/pengelola", label: "Ringkasan" },
   { href: "/pengelola/nasabah", label: "Nasabah" },
   { href: "/pengelola/materials", label: "Jenis & Harga Sampah" },
+  { href: "/pengelola/deposits", label: "Catat Setoran" },
+  { href: "/pengelola/cashbook", label: "Buku Kas" },
+  { href: "/pengelola/reports", label: "Laporan & Karbon" },
 ];
 
 const PENGELOLA_MODULES = [
@@ -25,16 +28,22 @@ const PENGELOLA_MODULES = [
     cta: "Kelola Harga Sampah",
   },
   {
-    title: "Catat Setoran Offline & Struk Digital (M4)",
-    detail: "Penimbangan gram bulat, antrean IndexedDB, sinkronisasi idempoten, dan struk digital.",
-    href: null,
-    cta: "Segera di M4",
+    title: "Catat Setoran Offline & Struk Digital",
+    detail: "Penimbangan gram bulat, pindai QR nasabah, antrean IndexedDB, sinkronisasi idempoten, dan struk digital.",
+    href: "/pengelola/deposits",
+    cta: "Catat Setoran",
   },
   {
-    title: "Buku Kas, Dashboard & Laporan (M5)",
-    detail: "Penjualan pengepul, penarikan nasabah, Carbon Ledger, dan ekspor CSV/PDF.",
-    href: null,
-    cta: "Segera di M5",
+    title: "Buku Kas, Penjualan Pengepul & Penarikan",
+    detail: "Catat penjualan ke pengepul, penarikan tunai nasabah, entri kas manual, dan rekonsiliasi saldo.",
+    href: "/pengelola/cashbook",
+    cta: "Buka Buku Kas",
+  },
+  {
+    title: "Dashboard Bulanan, Ekspor & Carbon Ledger",
+    detail: "Ringkasan bulanan, unduh laporan CSV/PDF terautentikasi, dan audit Estimasi Carbon Ledger.",
+    href: "/pengelola/reports",
+    cta: "Buka Laporan & Karbon",
   },
 ];
 

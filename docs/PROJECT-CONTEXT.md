@@ -81,7 +81,17 @@ _Update this section whenever work is handed off._
     - `/pengelola/nasabah` (`app/pengelola/nasabah/page.tsx`): Nasabah search/filter (`search`, `rw`, `rt`), create & edit Nasabah, printable QR Card modal & token regeneration, and Pengelola-initiated PIN/password reset.
     - `/pengelola/materials` (`app/pengelola/materials/page.tsx`): Master Data Jenis & Harga Sampah CRUD, WARM v16 factor linking, append-only price updates, and price history viewer.
   - Unit tests in `lib/__tests__/pengelola-api.test.ts`.
-- **Next milestone**: `M4` — Deposit Recording (Setoran), QR Lookup, Offline Sync & Struk Digital (`docs/plans/ROADMAP.md`).
+- **Milestone M4 (Deposit Recording, QR Lookup, Offline Sync & Struk Digital) is completed**:
+  - Typed deposit & QR lookup API client (`lib/api/deposits.ts`) with integer `weight_grams` validation and pure integer Rupiah / WARM v16 CO2e preview helpers.
+  - IndexedDB offline cache & outbox sync subsystem (`lib/offline/db.ts`, `lib/offline/sync.ts`) generating UUIDv4 `idempotency_key` & `client_recorded_at` and reconciling `created`/`replayed`/`error` via `POST /api/v1/deposits/sync`.
+  - Pengelola deposit workspace (`/pengelola/deposits`, `components/pengelola/qr-lookup-modal.tsx`) and printable Struk Digital (`components/deposits/digital-receipt-card.tsx`, `/pengelola/deposits/[id]/receipt`).
+  - Unit tests in `lib/__tests__/deposits-offline.test.ts`.
+- **Milestone M5 (Cashbook, Dashboard Bulanan & Export Reports) is completed**:
+  - Authenticated blob download helper `authFetchBlob` in `lib/auth/fetch-auth.ts` sharing single-flight `401` refresh token rotation.
+  - Typed M5 API clients: `lib/api/cashbook.ts` (sales to Pengepul, Nasabah withdrawals & balance lookup, manual cashbook entries, summary, reconciliation), `lib/api/reports.ts` (monthly dashboard, CSV/PDF blob export), and `lib/api/carbon.ts` (Carbon Ledger, summary, append-only reversals).
+  - Pengelola M5 pages: `/pengelola/cashbook` (`app/pengelola/cashbook/page.tsx`) and `/pengelola/reports` (`app/pengelola/reports/page.tsx`), linked in `PENGELOLA_NAV` and `app/pengelola/page.tsx`.
+  - Unit tests in `lib/__tests__/cashbook-reports-carbon.test.ts`.
+- **Next milestone**: `M6` — Nasabah Portal (`docs/plans/ROADMAP.md`).
 
 ## Where to look
 | Need | File |

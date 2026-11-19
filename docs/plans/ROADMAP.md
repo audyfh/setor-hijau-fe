@@ -30,21 +30,21 @@ Each milestone gets its own plan file in `docs/plans/active/` when started and m
 - Master Data Jenis & Harga Sampah (`GET/POST/PUT /api/v1/materials`), append-only price update & history viewer (`POST/GET /api/v1/materials/:id/prices`)
 - Accept: Price changes show append-only history; all weights/prices remain integer values in forms/state
 
-## M4 — Deposit Recording (Setoran), QR Lookup, Offline Sync & Struk Digital [NEXT]
+## M4 — Deposit Recording (Setoran), QR Lookup, Offline Sync & Struk Digital [COMPLETED]
 - Deposit form with integer gram inputs, live subtotal & estimated CO2e preview, and Pengelola QR scanner lookup (`POST /api/v1/nasabah/lookup-qr`)
 - IndexedDB cache (materials & nasabah) and offline outbox queue generating UUIDv4 `idempotency_key` & `client_recorded_at`
 - Background & manual sync via `POST /api/v1/deposits/sync` handling `200`/`201` idempotent replays cleanly
 - **Struk Digital** view & printable receipt (`GET /api/v1/deposits/:id/receipt`) showing Rupiah & estimated avoided CO2e per line
 - Accept: Recording deposits offline persists across reload, syncs without duplicates on reconnect, and renders Struk Digital
 
-## M5 — Cashbook (Buku Kas), Dashboard Bulanan & Export Reports
+## M5 — Cashbook (Buku Kas), Dashboard Bulanan & Export Reports [COMPLETED]
 - Sales to Pengepul (`POST/GET /api/v1/cashbook/sales`), Nasabah withdrawals (`POST /api/v1/nasabah/:id/withdrawals`), manual cashbook entries, summary & reconciliation view
 - Monthly Dashboard (`GET /api/v1/dashboard/monthly?month=YYYY-MM`)
 - CSV & PDF report download buttons (`GET /api/v1/reports/monthly/csv`, `/pdf`) with authenticated blob download
 - Carbon ledger viewer & reversal recording (`GET /api/v1/carbon/ledger`, `POST /api/v1/carbon/reversals`)
 - Accept: Cashbook & reconciliation views match backend totals; CSV & PDF downloads work cleanly
 
-## M6 — Nasabah Portal
+## M6 — Nasabah Portal [NEXT]
 - Nasabah dashboard: derived Rupiah balance (`/api/v1/nasabah/me/balance`), estimated Tabungan Karbon (`/api/v1/nasabah/me/carbon`), deposit history + Struk Digital, withdrawal history, self-service 6-digit PIN setup (`/api/v1/nasabah/me/pin`), and sorting guide
 - Accept: Nasabah sees strictly own data and clear "Estimasi" carbon labels
 
