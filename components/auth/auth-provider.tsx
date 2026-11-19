@@ -16,6 +16,7 @@ import {
   extractUserFromJwt,
   getStoredSession,
   setStoredSession,
+  subscribeSessionChange,
 } from "@/lib/auth/session";
 import type {
   AuthSession,
@@ -105,13 +106,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     void initSession();
 
+    const unsubscribe = subscribeSessionChange(() => {
+      if (active) {
+        setSession(getStoredSession());
+      }
+    });
+
     return () => {
       active = false;
+      unsubscribe();
     };
   }, [hydrateFromServer]);
 
   const applyTokenPair = useCallback(
     async (tokens: AuthTokenPairResponse): Promise<AuthSession> => {
+      if (!tokens?.access_token) {
+        throw new Error("Respons login tidak menyertakan access_token.");
+      }
+
       let user = tokens.user ?? extractUserFromJwt(tokens.access_token);
       let tenant = tokens.tenant ?? null;
 
@@ -124,7 +136,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       const nextSession: AuthSession = {
         accessToken: tokens.access_token,
-        refreshToken: tokens.refresh_token,
+        refreshToken: tokens.refresh_token ?? "",
         user,
         tenant,
       };

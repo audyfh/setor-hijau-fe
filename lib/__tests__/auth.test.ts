@@ -1,5 +1,10 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { loginNasabahWithQr, loginWithPassword, registerTenant } from "@/lib/api/auth";
+import {
+  loginNasabahWithQr,
+  loginWithPassword,
+  normalizeTokenPairResponse,
+  registerTenant,
+} from "@/lib/api/auth";
 import { ApiError } from "@/lib/api/client";
 import { authFetch } from "@/lib/auth/fetch-auth";
 import {
@@ -200,5 +205,22 @@ describe("lib/auth", () => {
       "https://prod-setor-hijau.cloud.run/api/v1/tenants/register",
       expect.objectContaining({ method: "POST" }),
     );
+  });
+
+  it("normalizeTokenPairResponse extracts tokens from flat or nested envelopes", () => {
+    expect(
+      normalizeTokenPairResponse({
+        data: { access_token: "acc-1", refresh_token: "ref-1" },
+      }),
+    ).toMatchObject({ access_token: "acc-1", refresh_token: "ref-1" });
+
+    expect(
+      normalizeTokenPairResponse({
+        tokens: { access_token: "acc-2", refresh_token: "ref-2" },
+        user: { id: "u1", username: "admin", full_name: "Admin", role: "pengelola", bank_sampah_id: "t1" },
+      }),
+    ).toMatchObject({ access_token: "acc-2", refresh_token: "ref-2" });
+
+    expect(() => normalizeTokenPairResponse({ message: "ok" })).toThrow(/access_token/);
   });
 });

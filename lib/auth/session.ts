@@ -1,9 +1,37 @@
 import type { AuthSession, AuthUser, UserRole } from "@/lib/auth/types";
 
 const SESSION_STORAGE_KEY = "setor_hijau_auth_session_v1";
+const SESSION_CHANGE_EVENT = "setor-hijau:session-changed";
 
 function isBrowser(): boolean {
   return typeof window !== "undefined" && typeof window.localStorage !== "undefined";
+}
+
+function notifySessionChanged(): void {
+  if (
+    typeof window !== "undefined" &&
+    typeof window.dispatchEvent === "function" &&
+    typeof CustomEvent === "function"
+  ) {
+    window.dispatchEvent(new CustomEvent(SESSION_CHANGE_EVENT));
+  }
+}
+
+export function subscribeSessionChange(listener: () => void): () => void {
+  if (typeof window === "undefined" || typeof window.addEventListener !== "function") {
+    return () => {};
+  }
+  const onStorage = (event: StorageEvent) => {
+    if (event.key === null || event.key === SESSION_STORAGE_KEY) {
+      listener();
+    }
+  };
+  window.addEventListener(SESSION_CHANGE_EVENT, listener);
+  window.addEventListener("storage", onStorage);
+  return () => {
+    window.removeEventListener(SESSION_CHANGE_EVENT, listener);
+    window.removeEventListener("storage", onStorage);
+  };
 }
 
 export function getStoredSession(): AuthSession | null {
@@ -17,12 +45,12 @@ export function getStoredSession(): AuthSession | null {
       return null;
     }
     const parsed = JSON.parse(raw) as Partial<AuthSession>;
-    if (!parsed.accessToken || !parsed.refreshToken) {
+    if (!parsed.accessToken) {
       return null;
     }
     return {
       accessToken: parsed.accessToken,
-      refreshToken: parsed.refreshToken,
+      refreshToken: parsed.refreshToken ?? "",
       user: parsed.user ?? null,
       tenant: parsed.tenant ?? null,
     };
@@ -37,6 +65,7 @@ export function setStoredSession(session: AuthSession): void {
   }
   try {
     window.localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
+    notifySessionChanged();
   } catch {
     // Ignore storage quota errors cleanly.
   }
@@ -48,6 +77,7 @@ export function clearStoredSession(): void {
   }
   try {
     window.localStorage.removeItem(SESSION_STORAGE_KEY);
+    notifySessionChanged();
   } catch {
     // Ignore storage errors cleanly.
   }

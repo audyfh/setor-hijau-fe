@@ -44,11 +44,11 @@ Each milestone gets its own plan file in `docs/plans/active/` when started and m
 - Carbon ledger viewer & reversal recording (`GET /api/v1/carbon/ledger`, `POST /api/v1/carbon/reversals`)
 - Accept: Cashbook & reconciliation views match backend totals; CSV & PDF downloads work cleanly
 
-## M6 — Nasabah Portal [NEXT]
+## M6 — Nasabah Portal [COMPLETED]
 - Nasabah dashboard: derived Rupiah balance (`/api/v1/nasabah/me/balance`), estimated Tabungan Karbon (`/api/v1/nasabah/me/carbon`), deposit history + Struk Digital, withdrawal history, self-service 6-digit PIN setup (`/api/v1/nasabah/me/pin`), and sorting guide
 - Accept: Nasabah sees strictly own data and clear "Estimasi" carbon labels
 
-## M7 — Production Deployment & Verification
+## M7 — Production Deployment & Verification [NEXT]
 - Configure Vercel deployment (primary) with `NEXT_PUBLIC_API_BASE_URL=https://prod-setor-hijau.cloud.run`
 - Verify CORS interaction with Cloud Run backend and add optional `Dockerfile` (standalone fallback)
 - End-to-end verification across public, Pengelola (online + offline sync), and Nasabah flows against live backend

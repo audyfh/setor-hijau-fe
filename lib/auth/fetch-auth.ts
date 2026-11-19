@@ -16,19 +16,26 @@ async function rotateSession(current: AuthSession): Promise<AuthSession | null> 
     return inFlightRefresh;
   }
 
+  if (!current.refreshToken) {
+    clearStoredSession();
+    return null;
+  }
+
   inFlightRefresh = (async () => {
     try {
       const tokens = await refreshAuthTokens(current.refreshToken);
       const nextSession: AuthSession = {
         accessToken: tokens.access_token,
-        refreshToken: tokens.refresh_token,
+        refreshToken: tokens.refresh_token || current.refreshToken,
         user: tokens.user ?? current.user ?? extractUserFromJwt(tokens.access_token),
         tenant: tokens.tenant ?? current.tenant,
       };
       setStoredSession(nextSession);
       return nextSession;
-    } catch {
-      clearStoredSession();
+    } catch (error) {
+      if (error instanceof ApiError && (error.status === 401 || error.status === 403)) {
+        clearStoredSession();
+      }
       return null;
     } finally {
       inFlightRefresh = null;

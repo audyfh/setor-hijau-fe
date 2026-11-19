@@ -91,7 +91,11 @@ _Update this section whenever work is handed off._
   - Typed M5 API clients: `lib/api/cashbook.ts` (sales to Pengepul, Nasabah withdrawals & balance lookup, manual cashbook entries, summary, reconciliation), `lib/api/reports.ts` (monthly dashboard, CSV/PDF blob export), and `lib/api/carbon.ts` (Carbon Ledger, summary, append-only reversals).
   - Pengelola M5 pages: `/pengelola/cashbook` (`app/pengelola/cashbook/page.tsx`) and `/pengelola/reports` (`app/pengelola/reports/page.tsx`), linked in `PENGELOLA_NAV` and `app/pengelola/page.tsx`.
   - Unit tests in `lib/__tests__/cashbook-reports-carbon.test.ts`.
-- **Next milestone**: `M6` — Nasabah Portal (`docs/plans/ROADMAP.md`).
+- **Milestone M6 (Nasabah Portal) is completed**:
+  - Typed Nasabah Portal API client (`lib/api/nasabah-portal.ts`) covering `GET /api/v1/nasabah/me`, `/me/balance`, `/me/carbon`, `/me/withdrawals`, and `PUT /api/v1/nasabah/me/pin` (strict 6-digit validation).
+  - Live Nasabah Portal at `/nasabah` (`app/nasabah/page.tsx`) displaying derived Rupiah balance, explicitly labeled `"Estimasi"` Tabungan Karbon (US EPA WARM v16), personal QR identity, deposit history with reusable `<DigitalReceiptCard />`, withdrawal history, self-service 6-digit PIN setup, and links to `/panduan` and `/metode`.
+  - Unit tests in `lib/__tests__/nasabah-portal.test.ts`.
+- **Next milestone**: `M7` — Production Deployment & Verification (`docs/plans/ROADMAP.md`).
 
 ## Where to look
 | Need | File |
