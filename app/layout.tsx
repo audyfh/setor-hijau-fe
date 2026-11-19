@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { Suspense, type ReactNode } from "react";
 import type { Metadata } from "next";
 import { Geist_Mono } from "next/font/google";
 import { AuthProvider } from "@/components/auth/auth-provider";
@@ -21,7 +21,11 @@ export const metadata: Metadata = {
     "Platform bank sampah tingkat RW dengan pencatatan setoran offline, buku kas otomatis, Carbon Ledger berbasis estimasi EPA WARM v16, dan Net Impact Meter SWDM v4.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: ReactNode;
+}>) {
   return (
     <html lang="id" className={`${geistMono.variable} h-full antialiased`}>
       <head>
